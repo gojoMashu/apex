@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#0A0B0D" />
+<title>APEX — Workout Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --base:#0A0B0D; --card:#141619; --card2:#1C2026; --input:#0E0F12;
+    --accent:#00C2FF; --accent-soft:rgba(0,194,255,.12);
+    --good:#23C16B; --good-soft:rgba(35,193,107,.15);
+    --dim:#828A94; --dim2:#5B626B; --line:#23272E;
+    --head:'Barlow Condensed',system-ui,sans-serif; --body:'Barlow',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--base);color:#fff;font-family:var(--body);
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(96px + env(safe-area-inset-bottom)) env(safe-area-inset-left);}
+  .wrap{max-width:620px;margin:0 auto;padding:18px 14px 0;}
+  h1,h2,h3,.head{font-family:var(--head);}
+  .accent{color:var(--accent);} .good{color:var(--good);} .dim{color:var(--dim);} .dim2{color:var(--dim2);}
+  input{font-family:var(--head);}
+  input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+  input[type=number]{-moz-appearance:textfield;}
+  button{font-family:var(--head);cursor:pointer;border:none;background:none;color:inherit;}
+  .tap{transition:transform .08s ease,background .15s,border-color .15s;} .tap:active{transform:scale(.97);}
+
+  /* header */
+  .topline{display:flex;justify-content:space-between;align-items:flex-end;}
+  .logo{font-family:var(--head);font-weight:900;font-size:30px;letter-spacing:.5px;line-height:1;}
+  .sub{font-size:12px;color:var(--dim);margin-top:3px;}
+  .goal{text-align:right;font-family:var(--head);font-weight:800;font-size:22px;line-height:1;}
+  .goalsub{font-size:11px;color:var(--dim2);margin-top:3px;}
+  .strip{background:var(--card2);border-radius:10px;padding:9px 14px;margin-top:14px;
+         display:flex;justify-content:space-between;align-items:center;
+         clip-path:polygon(0 0,100% 0,100% 100%,8px 100%,0 calc(100% - 8px));}
+  .strip .k{font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+  .strip .v{font-size:12px;color:var(--accent);font-weight:600;}
+
+  /* day tabs */
+  .tabs{display:flex;gap:8px;margin-top:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+  .tabs::-webkit-scrollbar{height:0;}
+  .tab{flex:0 0 auto;min-width:84px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-align:center;}
+  .tab .n{font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.16em;color:var(--dim2);}
+  .tab .t{font-family:var(--head);font-weight:800;font-size:15px;line-height:1.05;margin-top:3px;white-space:nowrap;}
+  .tab.on{border-color:var(--accent);box-shadow:0 0 0 1px rgba(0,194,255,.4),0 0 22px rgba(0,194,255,.12);}
+  .tab.on .n{color:var(--accent);}
+
+  /* timer bar */
+  .bar{display:flex;justify-content:space-between;align-items:center;margin-top:16px;}
+  .dayname{font-family:var(--head);font-weight:900;font-size:24px;line-height:1.05;}
+  .daydate{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.14em;}
+  .timer{background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:6px 12px;text-align:center;
+         box-shadow:0 0 0 1px rgba(0,194,255,.3),0 0 22px rgba(0,194,255,.1);}
+  .timer .t{font-family:var(--head);font-weight:900;font-size:22px;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums;}
+  .timer .s{font-size:11px;color:var(--dim);margin-top:2px;}
+
+  .note{background:var(--card2);border-radius:10px;padding:12px 14px;margin-top:14px;}
+  .note .h{font-family:var(--head);font-weight:700;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+  .note p{font-size:14px;color:var(--dim);margin-top:6px;line-height:1.5;}
+
+  /* exercise card */
+  .ex{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px;}
+  .exhead{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .exname{font-family:var(--head);font-weight:800;font-size:19px;line-height:1.05;}
+  .pill{font-family:var(--body);font-weight:600;font-size:11px;padding:4px 8px;border-radius:6px;
+        background:var(--accent-soft);color:var(--accent);white-space:nowrap;}
+  .cue{font-size:13px;color:var(--dim);margin-top:6px;line-height:1.45;border-left:2px solid var(--accent);padding-left:9px;}
+
+  .grid{display:grid;grid-template-columns:30px 1fr 1.05fr .85fr 38px;gap:7px;align-items:center;}
+  .ghead{margin:12px 0 2px;font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.08em;
+         text-transform:uppercase;color:var(--dim2);}
+  .row{padding:4px 0;border-radius:8px;}
+  .row.done{background:var(--good-soft);}
+  .setn{font-family:var(--head);font-weight:800;font-size:18px;text-align:center;color:var(--dim);}
+  .row.done .setn{color:var(--good);}
+  .prev{font-size:12px;color:var(--dim);}
+  .inp{width:100%;background:var(--input);border:1px solid var(--line);border-radius:8px;
+       padding:9px 4px;text-align:center;color:#fff;font-weight:700;font-size:16px;outline:none;}
+  .row.done .inp{border-color:var(--good);color:var(--good);}
+  .chk{width:34px;height:34px;border-radius:8px;background:var(--card2);border:1px solid var(--line);
+       display:flex;align-items:center;justify-content:center;margin:0 auto;}
+  .chk.on{background:var(--good);border-color:var(--good);}
+  .chk svg{width:18px;height:18px;}
+
+  .addset{width:100%;margin-top:10px;background:var(--accent-soft);color:var(--accent);
+          font-family:var(--head);font-weight:700;font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+          border-radius:8px;padding:9px;}
+
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;}
+  .finish{background:var(--accent);color:#06121A;font-family:var(--head);font-weight:800;font-size:18px;
+          letter-spacing:.16em;text-transform:uppercase;border-radius:10px;padding:13px;}
+  .reset{border:1px solid var(--line);color:var(--dim);font-family:var(--head);font-weight:800;font-size:18px;
+         letter-spacing:.16em;text-transform:uppercase;border-radius:10px;padding:13px;}
+  .reset.confirm{background:var(--card2);color:#fff;}
+
+  .datarow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .dbtn{border:1px solid var(--line);color:var(--dim);font-family:var(--head);font-weight:700;
+        font-size:13px;letter-spacing:.12em;text-transform:uppercase;border-radius:10px;padding:10px;}
+  .dbtn:active{border-color:var(--accent);color:var(--accent);}
+  .lastlog{font-size:12px;color:var(--dim2);text-align:center;margin-top:12px;}
+  .banner{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:10px 12px;
+          margin-top:14px;font-size:13px;color:var(--accent);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .banner button{font-family:var(--body);font-size:18px;color:var(--accent);}
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--good);color:#06121A;
+         font-family:var(--head);font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:14px;
+         padding:11px 22px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;}
+  .toast.show{opacity:1;}
+
+  /* rest controls + inline rest timer */
+  .rest-ctrl{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:14px;}
+  .rc-label{font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.18em;color:var(--dim2);margin-right:2px;}
+  .rc-opt,.rc-sound{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;
+        font-family:var(--head);font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--dim);}
+  .rc-opt.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
+  .rc-sound.off{opacity:.5;}
+  .rest{background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:8px 10px;margin:2px 0 6px;}
+  .rest.go{background:var(--good-soft);border-color:var(--good);}
+  .rt-bar{height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;}
+  .rt-fill{height:4px;background:var(--accent);width:100%;}
+  .rest.go .rt-fill{background:var(--good);}
+  .rt-row{display:flex;justify-content:space-between;align-items:center;margin-top:7px;}
+  .rt-time{font-family:var(--head);font-weight:900;font-size:20px;color:var(--accent);font-variant-numeric:tabular-nums;}
+  .rest.go .rt-time{color:var(--good);}
+  .rt-btns{display:flex;gap:6px;}
+  .rt-btns button{background:var(--card2);border-radius:6px;padding:6px 10px;font-family:var(--head);
+        font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--dim);}
+
+  /* per-exercise notes */
+  .notes-block{margin-top:10px;}
+  .notes-label{font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.16em;
+        text-transform:uppercase;color:var(--dim2);margin-bottom:5px;}
+  .notes-area{width:100%;background:var(--input);border:1px solid var(--line);border-radius:8px;
+        padding:9px 10px;color:#fff;font-family:var(--body);font-size:14px;line-height:1.45;
+        resize:vertical;outline:none;min-height:42px;}
+  .notes-area:focus{border-color:var(--accent);}
+  .notes-area::placeholder{color:var(--dim2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topline">
+    <div>
+      <div class="logo">APEX<span class="accent">.</span></div>
+      <div class="sub">Body recomp · visible abs · 4-day split · rev 2</div>
+    </div>
+    <div>
+      <div class="goal">77<span class="dim" style="font-size:14px"> kg</span> <span class="dim2" style="font-size:14px">→</span> <span class="accent">70</span><span class="dim" style="font-size:14px"> kg</span></div>
+      <div class="goalsub">Sustainable · no deadline</div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <span class="k">Target zone</span>
+    <span class="v">10–12% body fat · ~7 kg to lean out</span>
+  </div>
+
+  <div id="homebanner" class="banner" style="display:none">
+    <span>📲 Add to Home Screen to use this like an app — Share → "Add to Home Screen".</span>
+    <button onclick="dismissBanner()">✕</button>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="bar">
+    <div>
+      <div class="daydate" id="daydate"></div>
+      <div class="dayname" id="dayname"></div>
+    </div>
+    <div class="timer">
+      <div class="t" id="timer">0:00</div>
+      <div class="s" id="setcount">0/0 sets</div>
+    </div>
+  </div>
+
+  <div class="rest-ctrl">
+    <span class="rc-label">REST TIMER</span>
+    <button class="rc-opt" data-d="60">60s</button>
+    <button class="rc-opt" data-d="90">90s</button>
+    <button class="rc-opt" data-d="120">120s</button>
+    <button class="rc-sound" id="soundBtn">🔔 Sound on</button>
+  </div>
+
+  <div class="note">
+    <div class="h">Warm-Up · 5 min</div>
+    <p>5 min easy cardio to break a light sweat, then dynamic work: arm circles, band pull-aparts, leg swings, bodyweight squats, and 2 light ramp-up sets on your first lift.</p>
+  </div>
+
+  <div id="exercises"></div>
+
+  <div class="note">
+    <div class="h">Cool-Down</div>
+    <p>Static stretches ~25s each: chest doorway stretch, lat hang, hip-flexor lunge, hamstring fold, quad stretch. Slow nasal breathing to drop the heart rate.</p>
+  </div>
+
+  <div class="actions">
+    <button class="finish tap" onclick="finishDay()">Finish &amp; Log</button>
+    <button class="reset tap" id="resetBtn" onclick="resetDay()">Reset Day</button>
+  </div>
+  <div class="datarow">
+    <button class="dbtn tap" onclick="exportData()">↓ Backup</button>
+    <button class="dbtn tap" onclick="document.getElementById('importFile').click()">↑ Restore</button>
+  </div>
+  <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(event)">
+  <div class="lastlog" id="lastlog"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- PLAN (finalized, your real weights preloaded) ---------------- */
+const PLAN = [
+  { id:"d1", n:"DAY 1", short:"Push/Pull", title:"Chest · Back · Delts", ex:[
+    { name:"Incline Smith Press", m:"Chest",
+      cue:"~30° bench. Grip just outside shoulders, blades pinned down. Touch high (just under collarbone), 2–3s negative, press up & slightly back. Slide bench until the bar meets UPPER chest.",
+      sets:[{w:25,r:12},{w:26.25,r:10},{w:27.75,r:9}], unit:"ea side" },
+    { name:"Lat Pulldown (narrow)", m:"Back",
+      cue:"USE STRAPS. Grip failure is not back failure — if the fingers open at 70, that is the hand quitting, not the lat. Strap in and keep the load. Elbows down and back, chest up, no big lean.",
+      sets:[{w:67.5,r:12},{w:70,r:10},{w:70,r:8}] },
+    { name:"Reverse Pec Deck", m:"Rear Delts ★",
+      cue:"MOVED UP — weakest muscle goes early, not last. 18 kg across all 3 sets (2.5 kg add-on plate available for micro-jumps). Lead with the pinkies, elbows soft and FIXED. If traps take over or the torso rocks, drop to 16.5.",
+      sets:[{w:18,r:15},{w:18,r:13},{w:18,r:12}] },
+    { name:"Incline Pec Deck", m:"Chest", sets:[{w:23.75,r:12},{w:25,r:10},{w:26.25,r:8}], unit:"ea side" },
+    { name:"Wide Low Row", m:"Back",
+      cue:"CUE FIXED — pull to the LOWER STERNUM, not the belly. Wide grip = elbows flared 45–60°. Pulling low with a wide grip fights itself, which is why it felt dead. Pause and squeeze, control the negative. Straps if grip fades.",
+      sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
+    { name:"Cable Lateral Raise", m:"Side Delts",
+      cue:"DOUBLE PROGRESSION: stay at 7.5 until all three sets hit a clean 15, then go to 8.75 and climb from 12 again. No more guessing when to move up.",
+      sets:[{w:7.5,r:15},{w:7.5,r:15},{w:7.5,r:15}] },
+  ]},
+  { id:"d2", n:"DAY 2", short:"Push/Pull", title:"Chest · Back · Triceps", ex:[
+    { name:"Iso-Lateral Press", m:"Chest",
+      cue:"Raise the seat so handles sit at mid-chest. Blades into the pad, squeeze at the top instead of punching to lockout. Pause in the stretch.",
+      sets:[{w:41,r:13},{w:46,r:11},{w:50,r:9}] },
+    { name:"T-Bar Row", m:"Back", sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
+    { name:"Machine Chest Fly", m:"Chest",
+      cue:"LOAD FIXED — was 32/32/36. Never raise weight on the last set of a fly: peak stretch + externally rotated shoulder + fatigue is how shoulders tear. Flat 34 across, let reps fall. All three sets hit 12 → then go up.",
+      sets:[{w:34,r:12},{w:34,r:11},{w:34,r:10}] },
+    { name:"Lat Pulldown (cable)", m:"Back",
+      cue:"REPS FIXED — was 8/8/8. Wide pronated is the weakest and most shoulder-taxing grip, so it should NOT carry your lowest reps. Lighter, higher reps. ⚠ Slated for replacement by Straight-Arm Pulldown around week 4.",
+      sets:[{w:47.5,r:12},{w:50,r:11},{w:52.5,r:10}] },
+    { name:"Seated Dip Machine", m:"Triceps", sets:[{w:25,r:12},{w:30,r:10},{w:35,r:8}], unit:"ea side" },
+    { name:"Face Pull", m:"Rear Delts ★",
+      cue:"⚠ NO LOAD SET — calibrate this session. Rope at forehead height, pull to eyes/ears, rotate externally at the end. Start ~15 kg; the right weight is one notch below where the torso starts rocking. Write the number in.",
+      sets:[{w:15,r:15},{w:15,r:15},{w:15,r:15}] },
+  ]},
+  { id:"d3", n:"DAY 3", short:"Legs", title:"Legs · Abs", ex:[
+    { name:"Leg Press", m:"Quads",
+      cue:"Replaces hack squat. Start ~120 kg and work up so the last set is a hard 8. Feet mid-platform, control down to ~90°, don't lock the knees hard at the top.",
+      sets:[{w:120,r:12},{w:130,r:10},{w:140,r:8}] },
+    { name:"45° Back Extension", m:"Hams/Glutes ★",
+      cue:"NEW — your hip-hinge (replaces RDL). Bodyweight first; round-then-extend through the HIPS, squeeze glutes at the top, no hyperextending the lower back. Hug a plate once 3×12 is easy.",
+      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
+    { name:"Leg Extension", m:"Quads", sets:[{w:46,r:12},{w:50,r:10},{w:55,r:8}] },
+    { name:"Lying Leg Curl", m:"Hamstrings", sets:[{w:35,r:12},{w:40,r:10},{w:40,r:8}] },
+    { name:"Calf Raise (Smith)", m:"Calves", sets:[{w:70,r:12},{w:75,r:10},{w:80,r:8}] },
+    { name:"Hanging Leg Raise", m:"Abs ★",
+      cue:"NEW. Slow, no swinging — curl the pelvis up, don't just lift the legs. If grip fails first, use elbow straps.",
+      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
+    { name:"Hip Abduction (optional)", m:"Glutes", sets:[{w:86,r:12},{w:91,r:10},{w:91,r:8}] },
+  ]},
+  { id:"d4", n:"DAY 4", short:"Upper", title:"Shoulders · Arms · Abs", ex:[
+    { name:"Machine Shoulder Press", m:"Shoulders", sets:[{w:50,r:12},{w:55,r:10},{w:55,r:8}] },
+    { name:"Bayesian Cable Curl", m:"Biceps", sets:[{w:12.5,r:12},{w:12.5,r:10},{w:15,r:8}], unit:"ea hand" },
+    { name:"Preacher Curl", m:"Biceps", sets:[{w:37.5,r:12},{w:38.75,r:10},{w:40,r:8}] },
+    { name:"JM Press (Smith)", m:"Triceps", sets:[{w:27.5,r:12},{w:28.75,r:10},{w:30,r:8}] },
+    { name:"Overhead Triceps Ext.", m:"Triceps", sets:[{w:22.5,r:12},{w:25,r:10},{w:25,r:8}] },
+    { name:"Cable Lateral Raise", m:"Side Delts ★",
+      cue:"NEW — 2nd weekly dose for side delts (shoulder width = smaller-looking waist).",
+      sets:[{w:7.5,r:12},{w:7.5,r:12},{w:7.5,r:12}] },
+    { name:"Machine Ab Crunch", m:"Abs ★",
+      cue:"Replaces cable crunch. Set the pad/handles so resistance pulls your shoulders down — then crunch by rounding the spine and pulling ribs toward hips, not by hinging at the hips. Find a weight where the last set is a hard 10–12, then add load as it gets easy.",
+      sets:[{w:25,r:15},{w:30,r:12},{w:35,r:10}] },
+  ]},
+  { id:"d5", n:"QUICK", short:"Quick Legs", title:"Quick Legs", ex:[
+    { name:"Leg Press", m:"Quads",
+      cue:"Time-crunch leg day — the essential stimulus in ~25 min. Same as Day 3: start ~120 kg, work to a hard 8 on the last set.",
+      sets:[{w:120,r:12},{w:130,r:10},{w:140,r:8}] },
+    { name:"45° Back Extension", m:"Hams/Glutes ★",
+      cue:"Your hip-hinge. Bodyweight first; hug a plate once 3×12 is easy. Drive through the hips, squeeze the glutes at the top.",
+      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
+    { name:"Lying Leg Curl", m:"Hamstrings", sets:[{w:35,r:12},{w:40,r:10},{w:40,r:8}] },
+    { name:"Calf Raise (Smith)", m:"Calves", sets:[{w:70,r:12},{w:75,r:10},{w:80,r:8}] },
+  ]},
+];
+
+/* ---------------- State + storage ---------------- */
+const LS = "apex_v1";
+let store = load();
+function load(){ try{ return JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(LS, JSON.stringify(store)); }catch(e){} }
+
+let activeDay = store.activeDay || "d1";
+let startTime = Date.now();
+let resetArmed = false;
+
+// store.log[dayId] = { sets:{ "exIdx-setIdx":{w,r,done} }, extra:{ exIdx:[{w,r,done},...] } }
+function dayLog(id){ store.log = store.log || {}; store.log[id] = store.log[id] || {sets:{},extra:{}}; return store.log[id]; }
+
+/* ---------------- Render ---------------- */
+function render(){
+  // tabs
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  PLAN.forEach(d=>{
+    const b = document.createElement("button");
+    b.className = "tab tap" + (d.id===activeDay?" on":"");
+    b.innerHTML = `<div class="n">${d.n}</div><div class="t">${d.title.split(" · ")[0]}</div>`;
+    b.onclick = ()=>{ activeDay=d.id; store.activeDay=d.id; save(); startTime=Date.now(); resetArmed=false; render(); };
+    tabs.appendChild(b);
+  });
+
+  const day = PLAN.find(d=>d.id===activeDay);
+  document.getElementById("dayname").textContent = day.title;
+  document.getElementById("daydate").textContent = new Date().toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+
+  const log = dayLog(activeDay);
+  const host = document.getElementById("exercises");
+  host.innerHTML = "";
+
+  day.ex.forEach((ex,ei)=>{
+    const card = document.createElement("div");
+    card.className = "ex";
+    let html = `<div class="exhead"><div class="exname">${ex.name}</div><span class="pill">${ex.m}</span></div>`;
+    if(ex.cue) html += `<div class="cue">${ex.cue}</div>`;
+    html += `<div class="grid ghead"><div>Set</div><div>Target</div><div>Kg${ex.unit?` <span class="dim2">(${ex.unit})</span>`:""}</div><div>Reps</div><div style="text-align:center">✓</div></div>`;
+    card.innerHTML = html;
+
+    // base sets
+    ex.sets.forEach((s,si)=>{ const k=ei+"-"+si; card.appendChild(makeRow(ei,si,s,log,false)); if(restState&&restState.key===k) card.appendChild(buildRestEl(k)); });
+    // extra sets
+    (log.extra[ei]||[]).forEach((s,xi)=>{ const k=ei+"-x"+xi; card.appendChild(makeRow(ei,"x"+xi,{w:s.w,r:s.r,target:null},log,true)); if(restState&&restState.key===k) card.appendChild(buildRestEl(k)); });
+
+    const add = document.createElement("button");
+    add.className = "addset tap";
+    add.textContent = "+ Add Set";
+    add.onclick = ()=>{ log.extra[ei]=log.extra[ei]||[]; const last=ex.sets[ex.sets.length-1]; log.extra[ei].push({w:last.w,r:last.r,done:false}); save(); render(); };
+    card.appendChild(add);
+    card.appendChild(buildNotes(activeDay,ei));
+    host.appendChild(card);
+  });
+
+  updateCount();
+  // last log line
+  const done = (store.history||[]).filter(h=>h.dayId===activeDay).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+  document.getElementById("lastlog").textContent = done ? `Last logged: ${new Date(done.date).toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${done.totalSets} sets · ${fmtDur(done.dur)}` : "No sessions logged for this day yet.";
+}
+
+function makeRow(ei,si,s,log,isExtra){
+  const key = ei+"-"+si;
+  const cur = log.sets[key] || {};
+  const row = document.createElement("div");
+  row.className = "grid row" + (cur.done?" done":"");
+  const target = s.target===null ? "—" : `${s.w?s.w:"BW"}×${s.r}`;
+  row.innerHTML = `
+    <div class="setn">${typeof si==="string"?"+":(si+1)}</div>
+    <div class="prev">${target}</div>
+    <input class="inp" type="number" inputmode="decimal" placeholder="${s.w?s.w:"BW"}" value="${cur.w??""}" data-k="${key}" data-f="w">
+    <input class="inp" type="number" inputmode="numeric" placeholder="${s.r}" value="${cur.r??""}" data-k="${key}" data-f="r">
+    <button class="chk tap ${cur.done?"on":""}" data-k="${key}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="${cur.done?'#06121A':'#5B626B'}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </button>`;
+  row.querySelectorAll("input").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      const k=e.target.dataset.k, f=e.target.dataset.f;
+      log.sets[k]=log.sets[k]||{}; log.sets[k][f]=e.target.value; save();
+    });
+  });
+  row.querySelector(".chk").addEventListener("click",()=>{
+    unlockAudio();
+    log.sets[key]=log.sets[key]||{}; log.sets[key].done=!log.sets[key].done; save();
+    if(log.sets[key].done){ const dur=store.restDur||90; restState={key:key,endsAt:Date.now()+dur*1000,dur:dur,fired:false}; }
+    else if(restState && restState.key===key){ restState=null; }
+    render();
+  });
+  return row;
+}
+
+function updateCount(){
+  const day = PLAN.find(d=>d.id===activeDay);
+  const log = dayLog(activeDay);
+  let total=0, done=0;
+  day.ex.forEach((ex,ei)=>{
+    const base=ex.sets.length, extra=(log.extra[ei]||[]).length;
+    total += base+extra;
+  });
+  Object.values(log.sets).forEach(s=>{ if(s.done) done++; });
+  document.getElementById("setcount").textContent = `${done}/${total} sets`;
+}
+
+/* ---------------- Timer ---------------- */
+function fmtDur(s){ const m=Math.floor(s/60), sec=s%60; if(m>=60) return `${Math.floor(m/60)}h ${m%60}m`; return `${m}:${String(sec).padStart(2,"0")}`; }
+setInterval(()=>{ document.getElementById("timer").textContent = fmtDur(Math.floor((Date.now()-startTime)/1000)); },1000);
+
+/* ---------------- Finish / Reset ---------------- */
+function finishDay(){
+  const day = PLAN.find(d=>d.id===activeDay);
+  const log = dayLog(activeDay);
+  let totalSets=0;
+  Object.values(log.sets).forEach(s=>{ if(s.done) totalSets++; });
+  if(totalSets===0){ toast("Log at least one set"); return; }
+  store.history = store.history || [];
+  store.history.unshift({ dayId:activeDay, name:day.title, date:new Date().toISOString(),
+                          dur:Math.floor((Date.now()-startTime)/1000), totalSets });
+  // clear current working log for the day
+  store.log[activeDay] = {sets:{},extra:{}};
+  save();
+  startTime=Date.now();
+  toast("Session logged 💪");
+  render();
+}
+function resetDay(){
+  const btn = document.getElementById("resetBtn");
+  if(!resetArmed){ resetArmed=true; btn.textContent="Tap to confirm"; btn.classList.add("confirm");
+    setTimeout(()=>{ resetArmed=false; btn.textContent="Reset Day"; btn.classList.remove("confirm"); },2500); return; }
+  store.log[activeDay] = {sets:{},extra:{}};
+  save(); resetArmed=false; btn.textContent="Reset Day"; btn.classList.remove("confirm");
+  startTime=Date.now(); render();
+}
+
+/* ---------------- Backup / Restore (localStorage is origin-scoped:
+   moving from file:// to https:// starts with EMPTY storage) ---------------- */
+function exportData(){
+  try{
+    const blob = new Blob([JSON.stringify(store,null,2)],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "apex-backup-" + new Date().toISOString().slice(0,10) + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    const n = (store.history||[]).length;
+    toast(n ? ("Backed up \u00b7 " + n + " sessions") : "Backed up (no history yet)");
+  }catch(e){ toast("Export failed"); }
+}
+function importData(evt){
+  const f = evt.target.files && evt.target.files[0];
+  if(!f){ return; }
+  const rdr = new FileReader();
+  rdr.onload = ()=>{
+    try{
+      const data = JSON.parse(rdr.result);
+      if(!data || typeof data !== "object" || Array.isArray(data)) throw new Error("shape");
+      store = data;
+      store.log = store.log || {};
+      save();
+      activeDay = store.activeDay || "d1";
+      startTime = Date.now();
+      render();
+      toast("Data restored");
+    }catch(e){ toast("Invalid backup file"); }
+    evt.target.value = "";
+  };
+  rdr.onerror = ()=>{ toast("Could not read file"); evt.target.value=""; };
+  rdr.readAsText(f);
+}
+
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1600); }
+
+/* ---------------- Add-to-home banner (iOS hint) ---------------- */
+function dismissBanner(){ store.bannerDismissed=true; save(); document.getElementById("homebanner").style.display="none"; }
+(function(){
+  const standalone = window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches;
+  if(!standalone && !store.bannerDismissed){ document.getElementById("homebanner").style.display="flex"; }
+})();
+
+/* ---------------- Rest timer + sound ---------------- */
+let audioCtx=null, restState=null;
+function unlockAudio(){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
+}
+function beep(){
+  if(store.sound===false) return;
+  try{ if(navigator.vibrate) navigator.vibrate([200,100,200,100,300]); }catch(e){}
+  if(!audioCtx) return;
+  try{
+    const ctx=audioCtx, t0=ctx.currentTime;
+    [0,0.26,0.52].forEach((off,i)=>{
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.type="sine"; o.frequency.value = i===2?1175:880;
+      o.connect(g); g.connect(ctx.destination);
+      const t=t0+off;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.55,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.24);
+      o.start(t); o.stop(t+0.26);
+    });
+  }catch(e){}
+}
+function fmtRest(s){ return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); }
+function buildNotes(dayId,ei){
+  store.notes = store.notes || {};
+  store.notes[dayId] = store.notes[dayId] || {};
+  const wrap=document.createElement("div");
+  wrap.className="notes-block";
+  const label=document.createElement("div");
+  label.className="notes-label"; label.textContent="📝 My notes";
+  const ta=document.createElement("textarea");
+  ta.className="notes-area"; ta.rows=2;
+  ta.placeholder="e.g. felt upper chest more after sliding the bench back a notch…";
+  ta.value = store.notes[dayId][ei] || "";
+  ta.addEventListener("input",()=>{ store.notes[dayId][ei]=ta.value; save(); });
+  wrap.appendChild(label); wrap.appendChild(ta);
+  return wrap;
+}
+function buildRestEl(key){
+  const d=document.createElement("div");
+  d.className="rest"; d.id="rest-"+key;
+  d.innerHTML=`<div class="rt-bar"><div class="rt-fill"></div></div>
+    <div class="rt-row"><span class="rt-time">${fmtRest(store.restDur||90)}</span>
+    <span class="rt-btns"><button onclick="adjustRest(-15)">−15s</button><button onclick="adjustRest(30)">+30s</button><button onclick="skipRest()">Skip</button></span></div>`;
+  return d;
+}
+function adjustRest(delta){
+  if(!restState) return;
+  restState.endsAt += delta*1000;
+  if(restState.endsAt < Date.now()+500) restState.endsAt = Date.now()+500;
+  restState.fired=false;
+  const el=document.getElementById("rest-"+restState.key);
+  if(el){ el.classList.remove("go"); const b=el.querySelector(".rt-btns");
+    if(b) b.innerHTML='<button onclick="adjustRest(-15)">−15s</button><button onclick="adjustRest(30)">+30s</button><button onclick="skipRest()">Skip</button>'; }
+}
+function skipRest(){ restState=null; render(); }
+function tickRest(){
+  if(!restState) return;
+  const el=document.getElementById("rest-"+restState.key);
+  const remMs=restState.endsAt-Date.now();
+  if(remMs<=0){
+    if(!restState.fired){
+      restState.fired=true; beep();
+      if(el){ el.classList.add("go"); el.querySelector(".rt-time").textContent="GO 🔥";
+        el.querySelector(".rt-fill").style.width="100%";
+        const b=el.querySelector(".rt-btns"); if(b) b.innerHTML='<button onclick="skipRest()">Dismiss</button>'; }
+      setTimeout(()=>{ if(restState&&restState.fired) skipRest(); },5000);
+    }
+    return;
+  }
+  if(el){
+    el.querySelector(".rt-time").textContent=fmtRest(Math.ceil(remMs/1000));
+    el.querySelector(".rt-fill").style.width=Math.min(100,100*remMs/((restState.dur||90)*1000))+"%";
+  }
+}
+setInterval(tickRest,250);
+
+/* ---------------- Controls (rest duration + sound) ---------------- */
+function initControls(){
+  if(store.restDur===undefined) store.restDur=90;
+  if(store.sound===undefined) store.sound=true;
+  save();
+  document.querySelectorAll(".rc-opt").forEach(b=>{
+    b.classList.toggle("on", Number(b.dataset.d)===store.restDur);
+    b.onclick=()=>{ store.restDur=Number(b.dataset.d); save();
+      document.querySelectorAll(".rc-opt").forEach(x=>x.classList.toggle("on",Number(x.dataset.d)===store.restDur)); };
+  });
+  const sb=document.getElementById("soundBtn");
+  function sync(){ sb.classList.toggle("off",!store.sound); sb.textContent=store.sound?"🔔 Sound on":"🔕 Sound off"; }
+  sb.onclick=()=>{ unlockAudio(); store.sound=!store.sound; save(); sync(); if(store.sound) beep(); };
+  sync();
+}
+
+initControls();
+render();
+</script>
+</body>
+</html>
