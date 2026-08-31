@@ -147,6 +147,11 @@
   .tech li{font-size:13px;color:var(--dim);line-height:1.5;margin-bottom:6px;}
   .tech li strong{color:#fff;font-weight:600;}
   .tech li.warn{color:#FF8A6B;}
+  .tech .lnks{display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;}
+  .tech .lnks a{display:inline-block;border:1px solid var(--line);border-radius:7px;padding:6px 10px;
+        font-size:12px;color:var(--accent);text-decoration:none;background:var(--card);}
+  .tech .lnks a:active{border-color:var(--accent);}
+  .tech .lnks a span{color:var(--dim2);font-size:11px;}
 
   /* per-exercise notes */
   .notes-block{margin-top:10px;}
@@ -234,15 +239,131 @@
 const PLAN = [
   { id:"d1", n:"DAY 1", short:"Push/Pull", title:"Chest · Back · Delts", ex:[
     { name:"Incline Smith Press", m:"Chest",
-      cue:"~30° bench. Grip just outside shoulders, blades pinned down. Touch high (just under collarbone), 2–3s negative, press up & slightly back. Slide bench until the bar meets UPPER chest.",
+      cue:"SET THE BENCH TO 30° AND KEEP IT THERE — EMG peaks for upper chest at 30°; past 45° the front delt takes over. Pick one notch and never vary it. Slide the bench until the bar meets your UPPER chest, just under the collarbone.",
+      tech:{
+        works:"Pec major CLAVICULAR head (primary), sternal head assisting, anterior delt (grows sharply with bench angle), triceps, serratus and rotator cuff isometrically.",
+        build:"The shelf under the collarbone — the region that decides whether a chest reads full or flat. With a fuller chest now a stated goal this is the most important chest exercise you own: the upper chest is the hardest region to develop and gets almost nothing from flat pressing.",
+        steps:[
+          "<strong>Bench angle — 90% of the exercise.</strong> 30°, not 45°. Use the numbered notch or a phone angle app once, then use the SAME notch every session. Training 30° one week and 45° the next splits the stimulus and makes load tracking meaningless.",
+          "<strong>Bench position (unique to the Smith):</strong> the bar path is fixed — you can only move yourself. Slide the bench until the bar touches just BELOW the collarbone. Touching the sternum = bench too far back (that is a flat press); near the throat = too far forward.",
+          "<strong>Grip:</strong> just outside shoulder width. Test: forearms vertical at the bottom.",
+          "<strong>Lock the blades</strong> before unracking — back and down, chest up, slight arch in the UPPER back only.",
+          "<strong>Elbows 45–60°</strong> from the torso. 90° flared is the impingement position.",
+          "<strong>Down 2–3s, touch, do NOT bounce.</strong> Half-second pause, then drive. Stop just short of lockout."
+        ],
+        errors:[
+          "Bench steeper than 45° — shoulders burn instead of chest.",
+          "Bench positioned wrong — bar lands on the sternum or near the throat.",
+          "Bouncing off the chest — throws away the stretched position, where the growth signal is strongest.",
+          "Losing scapular retraction — shoulders roll forward and up at the top.",
+          "Hips lifting off the bench — you have turned it into a decline press."
+        ],
+        check:[
+          "Next-day soreness: under the collarbone (correct) or front of the shoulder (bench too steep)?",
+          "Where does the bar touch? It must be BELOW the collarbone.",
+          "Forearms vertical at the bottom? If not, fix grip width.",
+          "USE THE SMITH'S ADVANTAGE: no stabilisation and no spotter needed, so this is the lift where you can safely push closest to failure. Set 4 should be genuinely hard — if more than 2 reps are left in the tank, raise the whole ladder by 1.25."
+        ],
+        links:[
+          {t:"Gravitus · angle & setup",u:"https://gravitus.com/guides/exercises/smith-machine-incline-bench-press/"},
+          {t:"StrengthLog · form",u:"https://www.strengthlog.com/smith-machine-incline-bench-press/"},
+          {t:"M&S · video",u:"https://www.muscleandstrength.com/exercises/incline-smith-machine-bench-press.html"}
+        ]
+      },
       sets:[{w:25,r:12},{w:26.25,r:10},{w:27.75,r:9},{w:27.75,r:8}], unit:"ea side" },
     { name:"Lat Pulldown (narrow)", m:"Back",
-      cue:"USE STRAPS. Grip failure is not back failure — if the fingers open at 70, that is the hand quitting, not the lat. Strap in and keep the load. Elbows down and back, chest up, no big lean.",
+      cue:"USE STRAPS. Grip failure is not back failure — if the fingers open at 70, that is the hand quitting, not the lat. Strap in and keep the load. Start the pull with the SHOULDER BLADES, not the arms.",
+      tech:{
+        works:"Latissimus dorsi (primary — shoulder adduction + extension), teres major, lower trap and rhomboids (scapular depression), rear delt, plus biceps/brachialis/brachioradialis — the arm contribution is notably HIGH with a neutral V-bar grip.",
+        build:"Back width and the V-taper. This serves your primary goal indirectly but powerfully: a wider back makes the waist read narrower. That is proportion, not illusion — you can shrink the look of your waist without losing a gram.",
+        steps:[
+          "<strong>Thigh pad snug</strong> — no gap. A gap means you lift off the seat instead of pulling the weight down.",
+          "<strong>Top position:</strong> arms straight overhead and LET THE SHOULDER BLADES RISE. That is the lat stretch. Locking them down all set cuts off the strongest part of the stimulus.",
+          "<strong>Start with the blades, not the hands.</strong> The single most important cue here — pull the shoulder blades DOWN before the elbows bend. Otherwise the biceps lead and the lat just tags along.",
+          "<strong>Elbow path:</strong> down and slightly back, toward the back pockets. Think ELBOWS TO HIPS, not hands to chest.",
+          "<strong>Lean back 10–20° maximum.</strong> More than that and it becomes a row.",
+          "<strong>Pull to the upper chest, hold 1 second</strong>, then 2–3 seconds back up to a full stretch."
+        ],
+        errors:[
+          "Initiating with the arms — you feel it in the biceps rather than the back.",
+          "Leaning back more than 20° — that is a row, not a vertical pull.",
+          "Not letting the shoulders rise at the top — the stretch is cut off.",
+          "Elbows travelling out to the sides instead of down.",
+          "Pulling behind the neck — never. Pure shoulder stress."
+        ],
+        check:[
+          "Where do you feel it? Side of the back, under the armpit down toward the waist. Mostly biceps means you started with the arms.",
+          "Do the shoulders rise at the top of every rep?",
+          "Can you hold a full second at the bottom?",
+          "STRAP TEST: same 70 kg with straps. Reps jump = grip was the limiter, stay at 70. Reps unchanged = the back really is at its limit, drop to 65.",
+          "PROGRESSION: sets 2 and 3 are both 70 — hold there until set 3 gives a clean 10, then 72.5."
+        ],
+        links:[
+          {t:"Gravitus · full guide",u:"https://gravitus.com/guides/exercises/neutral-grip-lat-pulldown/"},
+          {t:"1st Phorm · V-bar setup",u:"https://1stphorm.com/blogs/news/neutral-grip-pulldown"},
+          {t:"Steel · form & benefits",u:"https://steelsupplements.com/blogs/steel-blog/how-to-do-neutral-grip-lat-pulldowns-form-benefits"}
+        ]
+      },
       sets:[{w:67.5,r:12},{w:70,r:10},{w:70,r:8}] },
     { name:"Reverse Pec Deck", m:"Rear Delts ★",
       cue:"MOVED UP — weakest muscle goes early, not last. 18 kg across all 3 sets (2.5 kg add-on plate available for micro-jumps). Lead with the pinkies, elbows soft and FIXED. If traps take over or the torso rocks, drop to 16.5.",
+      tech:{
+        works:"Posterior deltoid (primary — horizontal ABduction), rhomboids and mid traps (scapular retraction), infraspinatus and teres minor (external rotation, rotator-cuff stabilisers).",
+        build:"Three things at once. (1) SHOULDER INSURANCE: you press 14 sets a week, and pressing pulls the shoulder forward and in — the rear delt is the counterweight. Lose the shoulder and you lose the chest and arm work too. (2) A round shoulder from the side; front and side delts alone read flat. (3) This was the single biggest hole in your program — zero direct work until now.",
+        steps:[
+          "<strong>Seat height:</strong> handles exactly at shoulder height. Too high and the upper trap takes over; too low and it becomes a row.",
+          "<strong>Chest glued to the pad</strong> for the whole set. The moment you peel off it, the torso is doing the work.",
+          "<strong>Neutral grip (thumbs up) if the machine allows</strong> — research shows posterior delt and infraspinatus activation is significantly higher with a neutral grip than pronated. If only pronated is available, that is still fine.",
+          "<strong>Elbows softly bent and LOCKED at that angle.</strong> If they straighten and bend during the rep you have made it a reverse triceps movement.",
+          "<strong>Lead with the pinkies.</strong> Think OPEN THE ARMS WIDE, not pull back — imagine touching the walls on either side of you. That keeps it clean horizontal abduction.",
+          "<strong>Hold 1 second at full opening</strong>, then 2–3 seconds back to a full stretch in front of the chest."
+        ],
+        errors:[
+          "Shoulders shrugging toward the ears — the upper trap has stolen the exercise. Depress the blades before you start.",
+          "Elbow angle changing mid-rep.",
+          "Chest coming off the pad — torso rocking to move the weight.",
+          "Partial range — not reaching full opening, or not returning to the stretch."
+        ],
+        check:[
+          "Where do you feel it? BEHIND the shoulder. Between the shoulder blades means the elbows are travelling backward instead of outward — that is rhomboid work.",
+          "Are the shoulders still down on the last rep?",
+          "Can you pause a full second at full opening? If not, drop to 16.5.",
+          "PROGRESSION: three sets of a clean 15 → go to 20.5 using the 2.5 kg add-on. Quality beats number here — 6 weekly sets at a clean 18 beat 6 ugly sets at 23."
+        ],
+        links:[
+          {t:"Fitness Volt · neutral-grip study",u:"https://fitnessvolt.com/reverse-pec-deck-fly/"},
+          {t:"Set For Set · form guide",u:"https://www.setforset.com/blogs/news/reverse-pec-deck-fly"},
+          {t:"YouTube · form tutorial",u:"https://www.youtube.com/watch?v=v0rJuhEa59c"}
+        ]
+      },
       sets:[{w:18,r:15},{w:18,r:13},{w:18,r:12}] },
-    { name:"Incline Pec Deck", m:"Chest", sets:[{w:23.75,r:12},{w:25,r:10},{w:26.25,r:8}], unit:"ea side" },
+    { name:"Incline Pec Deck", m:"Chest",
+      cue:"REP FLOOR RAISED to 10 — a fly loads the chest in the stretched, externally-rotated position, the tightest spot in the joint. Heavy low reps there while fatigued is how shoulders tear. Same weights, never below 10.",
+      tech:{
+        works:"Pec major CLAVICULAR head (primary in the incline version), sternal head assisting, anterior delt, short head of biceps stabilising the fixed elbow angle, serratus anterior.",
+        build:"Upper chest — but through ADDUCTION rather than pressing, and that is why it is not a duplicate of the Incline Smith Press. In a press the triceps share the work. In a fly the elbow does not move, so the triceps are switched off and NO other muscle can do the job for the pec. That is why 26 kg here feels harder than 27.75 on the press: the chest is working alone.",
+        steps:[
+          "<strong>Seat height:</strong> handles around chest height. Test: the arms should travel UP and IN, not straight in. Horizontal travel means you have lost the incline.",
+          "<strong>Back and shoulders pinned to the pad</strong>, blades back and down, locked there. Shoulders rolling forward = tension has moved from chest to joint.",
+          "<strong>Elbows softly bent and LOCKED at that angle.</strong> Straightening and bending makes it a press and brings the triceps back in.",
+          "<strong>The opening is where the value is:</strong> open to a felt stretch across the chest, elbows roughly level with the torso. NO FURTHER — the path is fixed and over-opening forces the anterior capsule. Pause half a second in the stretch; that is the most lengthened position under load.",
+          "<strong>Close UP and IN</strong>, not just in — upper-chest fibres run from the collarbone downward to the arm, so they contract hardest when the arm travels upward toward the midline.",
+          "<strong>Squeeze 1 second at full closure</strong> — push into the end range, since many machines stop short of full adduction. Then 2–3 seconds back."
+        ],
+        errors:[
+          "Elbows breathing (angle changing) — it has become a press.",
+          "Opening too deep — you feel it in the front of the shoulder rather than as a stretch across the chest.",
+          "Shoulders rolling forward off the pad.",
+          "Letting the weight pull you back down instead of lowering it — the eccentric is the most valuable and most vulnerable part of a fly."
+        ],
+        check:[
+          "Where is the stretch? ACROSS the chest. Front of the shoulder means you are opening too deep.",
+          "Same elbow angle at the start and end of the rep?",
+          "Can you hold a second at full closure?",
+          "Is the descent controlled, or is the weight pulling you?"
+        ]
+      },
+      sets:[{w:23.75,r:12},{w:25,r:11},{w:26.25,r:10}], unit:"ea side" },
     { name:"Wide Low Row", m:"Back",
       cue:"CUE FIXED — pull to the LOWER STERNUM, not the belly. Wide grip = elbows flared 45–60°. Pulling low with a wide grip fights itself, which is why it felt dead. Pause and squeeze, control the negative. Straps if grip fades.",
       tech:{
@@ -270,11 +391,47 @@ const PLAN = [
           "Torso moving more than 15\u00b0? Momentum.",
           "Can you hold a full second at the contraction? If not, drop to 37.5.",
           "Use straps if grip fades \u2014 grip failure is not back failure."
+        ],
+        links:[
+          {t:"M&S · seated row video",u:"https://www.muscleandstrength.com/exercises/seated-row.html"}
         ]
       },
       sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
     { name:"Cable Lateral Raise", m:"Side Delts",
-      cue:"DOUBLE PROGRESSION: stay at 7.5 until all three sets hit a clean 15, then go to 8.75 and climb from 12 again. No more guessing when to move up.",
+      cue:"SETUP CHANGED — pulley just BELOW HIP height (not the floor), step ~an arm's length away so there is tension before rep 1, and use an ANKLE STRAP around the wrist instead of a handle. Expect to drop to ~6.25 and recalibrate. DOUBLE PROGRESSION: hold until all 3 sets hit a clean 15, then up one step.",
+      tech:{
+        works:"Lateral (middle) deltoid — abduction. Anterior delt assists if the arm drifts forward, supraspinatus initiates the first ~15°, upper trap takes over above 90° (which is what we minimise).",
+        build:"Shoulder width — and this feeds your PRIMARY goal. The shoulder-to-waist ratio is what creates the V. You can make the waist read narrower without losing a gram, just by widening what sits above it. Paired with the Reverse Pec Deck it gives a delt that is full from every angle.",
+        steps:[
+          "<strong>Pulley just below hip height</strong> — roughly where the hand hangs naturally. Cable tension is highest when the cable is PERPENDICULAR to the arm; at hip height that happens at the BOTTOM, where the delt is most lengthened. A floor pulley loads the top instead, which is the weaker stimulus.",
+          "<strong>Step ~an arm's length away</strong> so there is real tension before rep 1. Stand side-on, cable crossing in front of the body to the far hand.",
+          "<strong>Use an ankle strap around the wrist</strong> — no handle. Gripping hard lights up the forearm and makes you lead with the hand; the strap loads the ARM directly and forces the elbow to lead. It also removes the grip, your known limiter.",
+          "<strong>Lean 5–10° from the hips</strong>, no more. Elbow softly bent and locked there.",
+          "<strong>Lead with the ELBOW.</strong> Imagine a string pulling the elbow up and out. The elbow stays higher than the hand the whole way.",
+          "<strong>Stop at shoulder height.</strong> Above 90° the upper trap takes over.",
+          "<strong>Do NOT rotate the hand down.</strong> The old pouring-a-jug cue is outdated — internal rotation under abduction is the impingement position. Thumb neutral or slightly up.",
+          "<strong>Half-second hold at the top, 2–3 seconds down.</strong>"
+        ],
+        errors:[
+          "Raising above shoulder height — upper trap takes over.",
+          "Rocking the torso — there is no such thing as a little momentum on a small muscle.",
+          "Rotating the hand down at the top — shoulder-joint stress for no benefit.",
+          "Leading with the hand instead of the elbow — turns it into a partial front raise.",
+          "Cable running in FRONT of the body — recreates the dumbbell dead zone you came here to avoid."
+        ],
+        check:[
+          "Where do you feel it? SIDE of the shoulder. Traps mean you are going too high or shrugging.",
+          "Is the torso completely still through the set?",
+          "Is the elbow higher than the hand on every rep?",
+          "Do you stop exactly at shoulder height?",
+          "This sat at 7.5 for months with no rule for when to move. Now there is one — and a lower weight after the setup change is progress, not regression."
+        ],
+        links:[
+          {t:"Athlean-X · pulley height",u:"https://learn.athleanx.com/articles/shoulders-for-men/cable-lateral-raises"},
+          {t:"PureGym · resistance curve",u:"https://www.puregym.com/exercises/arms-and-shoulders/lateral-raises/cable-lateral-raise/"},
+          {t:"Gravitus · full guide",u:"https://gravitus.com/guides/exercises/lateral-raise-cable/"}
+        ]
+      },
       sets:[{w:7.5,r:15},{w:7.5,r:15},{w:7.5,r:15}] },
     { name:"Cable Hammer Curl", m:"Brachialis / Biceps \u2605",
       cue:"NEW \u2014 the only muscle in your arm with no direct work. Neutral grip, rope. Elbows PINNED to the ribs, no swing. Squeeze at the top, 2\u20133s down. Start ~15 kg.",
@@ -514,6 +671,8 @@ function buildTech(ex){
   if(t.steps) h+='<h4>Execution</h4><ol>'+t.steps.map(x=>'<li>'+x+'</li>').join("")+'</ol>';
   if(t.errors) h+='<h4>Common errors</h4><ul>'+t.errors.map(x=>'<li class="warn">'+x+'</li>').join("")+'</ul>';
   if(t.check) h+='<h4>Self-check</h4><ul>'+t.check.map(x=>'<li>'+x+'</li>').join("")+'</ul>';
+  if(t.links) h+='<h4>Watch / read</h4><div class="lnks">'+t.links.map(l=>
+      '<a href="'+l.u+'" target="_blank" rel="noopener">'+l.t+' <span>\u2197</span></a>').join("")+'</div>';
   d.innerHTML=h+'</div>';
   return d;
 }
