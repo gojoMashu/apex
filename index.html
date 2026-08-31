@@ -131,6 +131,23 @@
   .rt-btns button{background:var(--card2);border-radius:6px;padding:6px 10px;font-family:var(--head);
         font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--dim);}
 
+  /* collapsible technique block */
+  .tech{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:var(--card2);overflow:hidden;}
+  .tech summary{list-style:none;cursor:pointer;padding:9px 12px;font-family:var(--head);font-weight:700;
+        font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+        display:flex;justify-content:space-between;align-items:center;}
+  .tech summary::-webkit-details-marker{display:none;}
+  .tech summary::after{content:"+";font-size:17px;color:var(--dim2);line-height:1;}
+  .tech[open] summary::after{content:"\2212";}
+  .tech .tbody{padding:0 12px 12px;}
+  .tech h4{font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+        color:var(--dim2);margin:11px 0 5px;}
+  .tech p{font-size:13px;color:var(--dim);line-height:1.5;}
+  .tech ol,.tech ul{margin:0;padding-left:17px;}
+  .tech li{font-size:13px;color:var(--dim);line-height:1.5;margin-bottom:6px;}
+  .tech li strong{color:#fff;font-weight:600;}
+  .tech li.warn{color:#FF8A6B;}
+
   /* per-exercise notes */
   .notes-block{margin-top:10px;}
   .notes-label{font-family:var(--head);font-weight:700;font-size:11px;letter-spacing:.16em;
@@ -218,7 +235,7 @@ const PLAN = [
   { id:"d1", n:"DAY 1", short:"Push/Pull", title:"Chest · Back · Delts", ex:[
     { name:"Incline Smith Press", m:"Chest",
       cue:"~30° bench. Grip just outside shoulders, blades pinned down. Touch high (just under collarbone), 2–3s negative, press up & slightly back. Slide bench until the bar meets UPPER chest.",
-      sets:[{w:25,r:12},{w:26.25,r:10},{w:27.75,r:9}], unit:"ea side" },
+      sets:[{w:25,r:12},{w:26.25,r:10},{w:27.75,r:9},{w:27.75,r:8}], unit:"ea side" },
     { name:"Lat Pulldown (narrow)", m:"Back",
       cue:"USE STRAPS. Grip failure is not back failure — if the fingers open at 70, that is the hand quitting, not the lat. Strap in and keep the load. Elbows down and back, chest up, no big lean.",
       sets:[{w:67.5,r:12},{w:70,r:10},{w:70,r:8}] },
@@ -228,42 +245,166 @@ const PLAN = [
     { name:"Incline Pec Deck", m:"Chest", sets:[{w:23.75,r:12},{w:25,r:10},{w:26.25,r:8}], unit:"ea side" },
     { name:"Wide Low Row", m:"Back",
       cue:"CUE FIXED — pull to the LOWER STERNUM, not the belly. Wide grip = elbows flared 45–60°. Pulling low with a wide grip fights itself, which is why it felt dead. Pause and squeeze, control the negative. Straps if grip fades.",
+      tech:{
+        works:"Rhomboids and mid traps are the PRIME movers with a wide grip \u2014 not the lats. Rear delts (horizontal abduction), teres major, lats secondary, biceps/brachialis, erectors isometrically.",
+        build:"Upper-back thickness \u2014 the 3D look from the side and back. Also the counterweight to your 4 weekly chest exercises: without serious rhomboid and mid-trap work, the shoulders roll forward.",
+        steps:[
+          "<strong>Seat distance:</strong> sit so that at full stretch the arms are straight and the torso stays upright. If you have to fold forward to reach, you are too far back.",
+          "<strong>Torso angle:</strong> ~90\u00b0 upright. Up to 10\u201315\u00b0 forward at the stretch, back to 90\u00b0 on the pull. Not 45\u00b0 forward to 20\u00b0 back \u2014 that is rocking, not rowing.",
+          "<strong>Grip:</strong> about 1.5\u00d7 shoulder width, pronated (palms down).",
+          "<strong>The stretch:</strong> let the shoulder blades travel forward at full extension. That IS the rhomboid/mid-trap stretch \u2014 without it they have no range to work in. Lower back stays neutral, never rounds.",
+          "<strong>The pull \u2014 the fix:</strong> elbows flared 45\u201360\u00b0, pull to the LOWER STERNUM, not the navel. Start the pull with the shoulder blades, then bend the elbows. Your hands are hooks; the elbows drive.",
+          "<strong>The squeeze:</strong> a full 1-second pause at peak contraction, blades fully retracted. This is where the rhomboids actually get the stimulus.",
+          "<strong>The negative:</strong> 2\u20133 seconds. Let the blades travel forward again under control."
+        ],
+        errors:[
+          "Pulling to the belly with a wide grip \u2014 the grip wants elbows out, a low target wants elbows down. The body gets two contradictory orders, which is exactly why it felt dead.",
+          "Rocking the torso more than 15\u00b0 \u2014 that is momentum moving the weight, not your back.",
+          "Shrugging toward the ears \u2014 upper traps stealing the work. Shoulders DOWN and back.",
+          "Locked shoulder blades \u2014 hands move, blades do not. Zero rhomboid work.",
+          "Elbows tucked to the body with a wide grip \u2014 the grip demands flare and the path fights it."
+        ],
+        check:[
+          "Where do you feel it? It should be BETWEEN the shoulder blades. All lats or lower back means elbows too tucked, or pulling too low.",
+          "Shoulders creeping toward your ears? Upper-trap dominance.",
+          "Torso moving more than 15\u00b0? Momentum.",
+          "Can you hold a full second at the contraction? If not, drop to 37.5.",
+          "Use straps if grip fades \u2014 grip failure is not back failure."
+        ]
+      },
       sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
     { name:"Cable Lateral Raise", m:"Side Delts",
       cue:"DOUBLE PROGRESSION: stay at 7.5 until all three sets hit a clean 15, then go to 8.75 and climb from 12 again. No more guessing when to move up.",
       sets:[{w:7.5,r:15},{w:7.5,r:15},{w:7.5,r:15}] },
+    { name:"Cable Hammer Curl", m:"Brachialis / Biceps \u2605",
+      cue:"NEW \u2014 the only muscle in your arm with no direct work. Neutral grip, rope. Elbows PINNED to the ribs, no swing. Squeeze at the top, 2\u20133s down. Start ~15 kg.",
+      tech:{
+        works:"Brachialis (primary \u2014 sits UNDER the biceps), brachioradialis (forearm), biceps brachii both heads. Neutral grip means supination is removed, so the brachialis carries more of the load than in a standard curl.",
+        build:"Arm THICKNESS. The brachialis is roughly 15% of upper-arm mass and lies beneath the biceps \u2014 as it grows it pushes the biceps up, so the arm gets thicker and the peak looks higher. Your other two curls are both supinated, so neither trains it directly. The brachioradialis work also carries over to the grip problem limiting your pulldowns.",
+        steps:[
+          "<strong>Setup:</strong> rope on the low pulley, stand upright, feet shoulder width, slight knee bend.",
+          "<strong>Elbows pinned</strong> to the ribs and they stay there. If the elbows drift forward, the front delt is taking over.",
+          "<strong>Neutral grip</strong> throughout \u2014 thumbs up, palms facing each other. Do NOT rotate at the top; the neutral position is the entire point.",
+          "<strong>Curl up</strong> without moving the torso. If you have to lean back, it is too heavy.",
+          "<strong>Squeeze</strong> 1 second at the top, then <strong>2\u20133 seconds down</strong> to a full stretch with the arm nearly straight."
+        ],
+        errors:[
+          "Swinging the torso \u2014 the most common way to make this exercise useless.",
+          "Elbows travelling forward \u2014 turns it into a front raise.",
+          "Rotating to a supinated grip at the top \u2014 that is a normal curl and defeats the purpose.",
+          "Cutting the bottom short \u2014 the stretch is where the brachialis gets loaded."
+        ],
+        check:[
+          "Do you feel it on the OUTER part of the upper arm and into the forearm? That is the brachialis and brachioradialis \u2014 correct.",
+          "Are the elbows still against your ribs on the last rep?",
+          "Is the torso motionless? Any lean back means drop the weight."
+        ]
+      },
+      sets:[{w:15,r:12},{w:15,r:11},{w:15,r:10}] },
   ]},
-  { id:"d2", n:"DAY 2", short:"Push/Pull", title:"Chest · Back · Triceps", ex:[
+  { id:"d2", n:"DAY 2", short:"Push/Pull", title:"Chest \u00b7 Back \u00b7 Triceps", ex:[
     { name:"Iso-Lateral Press", m:"Chest",
-      cue:"Raise the seat so handles sit at mid-chest. Blades into the pad, squeeze at the top instead of punching to lockout. Pause in the stretch.",
-      sets:[{w:41,r:13},{w:46,r:11},{w:50,r:9}] },
+      cue:"LOADS UPDATED \u2014 file was 10% stale. Raise the seat so handles sit at mid-chest. Blades into the pad, squeeze at the top instead of punching to lockout. Pause in the stretch.",
+      tech:{
+        works:"Pec major (sternal head primarily), anterior delt (~20\u201330%), triceps (lateral and medial heads), serratus anterior isometrically.",
+        build:"Mid/lower chest thickness plus front delt. The unique value: independent arms mean the strong side cannot cover for the weak one. This is the ONLY exercise in your program that actually measures asymmetry \u2014 do not waste that.",
+        steps:[
+          "<strong>Seat height:</strong> handles at mid-chest (nipple line). This is 90% of the exercise and the only setting you truly control. Too high turns it into a shoulder press; too low makes it a decline.",
+          "<strong>Lock the blades</strong> BEFORE touching the weight: back and down, glued to the pad, held all set. The moment the shoulders roll forward at lockout, tension leaves the chest and lands on the joint.",
+          "<strong>Elbow angle:</strong> 45\u201360\u00b0 from the torso. Not 90\u00b0 flared \u2014 that is the classic impingement position.",
+          "<strong>Depth:</strong> to a felt stretch, elbows roughly in line with the torso. No further \u2014 the path is fixed and going deeper forces the anterior capsule open.",
+          "<strong>Do not lock out.</strong> Stop just short of full extension \u2014 keeps tension on the chest instead of the elbow joint.",
+          "<strong>Tempo:</strong> 2\u20133s down, brief pause in the stretch, decisive press."
+        ],
+        errors:[
+          "Seat too high \u2014 the front delt takes over and the shoulder carries load it should not.",
+          "Shoulders rolling forward at the top \u2014 tension leaves the chest entirely.",
+          "Pressing straight out instead of squeezing the elbows toward each other \u2014 the pec is a horizontal ADDUCTOR, not just an arm extender. The machine will not force this; you have to create it.",
+          "Uneven arms \u2014 one side finishing first is exactly the data this machine exists to give you."
+        ],
+        check:[
+          "Next-day soreness in the chest, or in the front of the shoulder? Front shoulder means seat too high or elbows too flared.",
+          "Do the shoulders lift or roll forward at the end of the rep?",
+          "Does one arm finish before the other? Write down which one.",
+          "Does your back come off the pad? Too heavy, or you are driving with the legs."
+        ]
+      },
+      sets:[{w:50,r:12},{w:52.5,r:10},{w:55,r:9},{w:55,r:8}] },
     { name:"T-Bar Row", m:"Back", sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
-    { name:"Machine Chest Fly", m:"Chest",
-      cue:"LOAD FIXED — was 32/32/36. Never raise weight on the last set of a fly: peak stretch + externally rotated shoulder + fatigue is how shoulders tear. Flat 34 across, let reps fall. All three sets hit 12 → then go up.",
-      sets:[{w:34,r:12},{w:34,r:11},{w:34,r:10}] },
+    { name:"Reverse Pec Deck", m:"Rear Delts \u2605",
+      cue:"REPLACED FACE PULL \u2014 same muscle, machine path you already know, load you already set. 2nd weekly dose for rear delts. Lead with the pinkies, elbows soft and FIXED. Traps taking over or torso rocking \u2192 drop to 16.5.",
+      sets:[{w:18,r:15},{w:18,r:13},{w:18,r:12}] },
+    { name:"High-to-Low Cable Fly", m:"Lower Chest \u2605",
+      cue:"NEW \u2014 replaces Machine Chest Fly. Pulleys at MAX height. Hands must meet at HIP height, not chest height \u2014 meet at the chest and you have just done a mid-chest fly in a cable. Start ~11 kg per side.",
+      tech:{
+        works:"Pec major, sternocostal head \u2014 specifically the lower fibres. Anterior delt and serratus assist. Biceps stabilise the fixed elbow angle.",
+        build:"The one chest region you had zero dedicated work for. Lower pec fibres run from the sternum UP to the arm, so they contract hardest when the arm travels DOWN and IN. No press gives you that vector. Note: this biases the region, it does not isolate it \u2014 expect a shift in emphasis, not a switch.",
+        steps:[
+          "<strong>Setup:</strong> both pulleys at maximum height, stand in the middle, one foot staggered forward for balance.",
+          "<strong>Torso:</strong> slight forward lean from the hips, spine neutral, core braced. The torso does not move during the set.",
+          "<strong>Elbows:</strong> soft bend, LOCKED at that angle the whole rep. If the elbows straighten and bend you are doing a pressdown, not a fly.",
+          "<strong>The path:</strong> pull down and IN so the hands meet at HIP height. This is the whole point \u2014 the arm must travel below the chest line for the lower fibres to reach full contraction.",
+          "<strong>The squeeze:</strong> cross the hands slightly at the bottom and hold 1 second.",
+          "<strong>The negative:</strong> 2\u20133 seconds back up to a full stretch across the chest."
+        ],
+        errors:[
+          "Hands meeting at chest height \u2014 that is a mid-chest fly and you have gained nothing over the machine it replaced.",
+          "Elbows straightening and bending \u2014 turns it into a triceps pressdown.",
+          "Torso rocking to move the weight \u2014 load is too heavy.",
+          "Pulleys set too low \u2014 kills the downward vector entirely."
+        ],
+        check:[
+          "Do you feel it along the bottom line of the chest? If it is all mid-chest, your hands are meeting too high.",
+          "Can you hold a full second at the crossover? If not, drop the weight.",
+          "Is the torso still at the end of the set, or swinging?"
+        ]
+      },
+      sets:[{w:11,r:15},{w:11,r:13},{w:11,r:12}], unit:"ea side" },
     { name:"Lat Pulldown (cable)", m:"Back",
-      cue:"REPS FIXED — was 8/8/8. Wide pronated is the weakest and most shoulder-taxing grip, so it should NOT carry your lowest reps. Lighter, higher reps. ⚠ Slated for replacement by Straight-Arm Pulldown around week 4.",
+      cue:"REPS FIXED \u2014 was 8/8/8. Wide pronated is the weakest and most shoulder-taxing grip, so it should NOT carry your lowest reps. Lighter, higher reps. \u26a0 Slated for replacement by Straight-Arm Pulldown around week 4.",
       sets:[{w:47.5,r:12},{w:50,r:11},{w:52.5,r:10}] },
-    { name:"Seated Dip Machine", m:"Triceps", sets:[{w:25,r:12},{w:30,r:10},{w:35,r:8}], unit:"ea side" },
-    { name:"Face Pull", m:"Rear Delts ★",
-      cue:"⚠ NO LOAD SET — calibrate this session. Rope at forehead height, pull to eyes/ears, rotate externally at the end. Start ~15 kg; the right weight is one notch below where the torso starts rocking. Write the number in.",
-      sets:[{w:15,r:15},{w:15,r:15},{w:15,r:15}] },
+    { name:"Seated Dip Machine", m:"Triceps",
+      cue:"TRICEPS, not lower chest \u2014 the back pad locks the torso upright, and the 30\u201345\u00b0 forward lean is what makes a dip a chest movement. STAYS AT 3 SETS: triceps is ~2/3 of upper-arm mass, so with bigger arms as a goal, cutting its volume works against you. Lower chest is covered by the High-to-Low Fly.",
+      sets:[{w:25,r:12},{w:30,r:10},{w:35,r:8}], unit:"ea side" },
+    { name:"Captain's Chair Leg Raise", m:"Abs \u2605",
+      cue:"MOVED FROM LEG DAY (replaces Hanging Leg Raise). Half your ab work was sitting on the day you skip most \u2014 now both ab sessions are on days you always train. Forearms on the pads means ZERO grip demand, which was the limiter.",
+      tech:{
+        works:"Rectus abdominis with a strong bias to the LOWER portion, hip flexors (iliopsoas, rectus femoris), obliques as stabilisers.",
+        build:"Abdominal thickness via posterior pelvic tilt \u2014 a different pattern from the Machine Ab Crunch, which flexes the spine from the top down. You need both: crunch brings ribs to pelvis, leg raise brings pelvis to ribs.",
+        steps:[
+          "<strong>Setup:</strong> forearms on the pads, back flat against the backrest, shoulders down and away from the ears.",
+          "<strong>The key move:</strong> ROLL THE PELVIS UP \u2014 do not just lift the legs. The legs rise as a RESULT of the pelvis tilting. If your lower back never leaves the pad, that is a hip-flexor raise, not an ab exercise.",
+          "<strong>Range:</strong> knees toward the chest, pause at the top where the abs are shortest.",
+          "<strong>Down slowly</strong> \u2014 3 seconds, controlled, no swinging back into the start."
+        ],
+        errors:[
+          "Only lifting the legs with no pelvic tilt \u2014 the single most common error, and it makes the exercise almost useless for the abs.",
+          "Swinging \u2014 momentum instead of tension.",
+          "Shoulders shrugging up into the ears.",
+          "Rushing the negative \u2014 half the stimulus is on the way down."
+        ],
+        check:[
+          "Does your lower back actively press INTO the pad as you lift? That is the pelvic tilt working.",
+          "Do you feel it in the abs, or mostly at the front of the hips? Hip flexors dominating means no pelvic tilt.",
+          "Progression: bent knees \u2192 straight legs \u2192 dumbbell held between the feet."
+        ]
+      },
+      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
   ]},
-  { id:"d3", n:"DAY 3", short:"Legs", title:"Legs · Abs", ex:[
+  { id:"d3", n:"DAY 3", short:"Legs", title:"Legs", ex:[
     { name:"Leg Press", m:"Quads",
-      cue:"Replaces hack squat. Start ~120 kg and work up so the last set is a hard 8. Feet mid-platform, control down to ~90°, don't lock the knees hard at the top.",
-      sets:[{w:120,r:12},{w:130,r:10},{w:140,r:8}] },
-    { name:"45° Back Extension", m:"Hams/Glutes ★",
-      cue:"NEW — your hip-hinge (replaces RDL). Bodyweight first; round-then-extend through the HIPS, squeeze glutes at the top, no hyperextending the lower back. Hug a plate once 3×12 is easy.",
-      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
+      cue:"LOADS UPDATED (file was stale). Feet mid-platform, control down to ~90\u00b0, don't lock the knees hard at the top. \u2b50 SCHEDULE: run this day EARLY in the week \u2014 end-of-week placement is why it gets skipped.",
+      sets:[{w:130,r:12},{w:140,r:10},{w:150,r:8}] },
+    { name:"45\u00b0 Back Extension", m:"Hams/Glutes \u2605",
+      cue:"LOADS UPDATED \u2014 you're already adding plates, the file didn't show it. Your hip-hinge (replaces RDL). Round-then-extend through the HIPS, squeeze glutes at the top, no hyperextending the lower back.",
+      sets:[{w:0,r:12},{w:5,r:12},{w:10,r:10}] },
     { name:"Leg Extension", m:"Quads", sets:[{w:46,r:12},{w:50,r:10},{w:55,r:8}] },
-    { name:"Lying Leg Curl", m:"Hamstrings", sets:[{w:35,r:12},{w:40,r:10},{w:40,r:8}] },
+    { name:"Lying Leg Curl", m:"Hamstrings",
+      cue:"LOADS UPDATED (file was stale). Third set was flat at 40 \u2014 now a proper ladder.",
+      sets:[{w:40,r:12},{w:45,r:10},{w:50,r:8}] },
     { name:"Calf Raise (Smith)", m:"Calves", sets:[{w:70,r:12},{w:75,r:10},{w:80,r:8}] },
-    { name:"Hanging Leg Raise", m:"Abs ★",
-      cue:"NEW. Slow, no swinging — curl the pelvis up, don't just lift the legs. If grip fails first, use elbow straps.",
-      sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
-    { name:"Hip Abduction (optional)", m:"Glutes", sets:[{w:86,r:12},{w:91,r:10},{w:91,r:8}] },
   ]},
+
   { id:"d4", n:"DAY 4", short:"Upper", title:"Shoulders · Arms · Abs", ex:[
     { name:"Machine Shoulder Press", m:"Shoulders", sets:[{w:50,r:12},{w:55,r:10},{w:55,r:8}] },
     { name:"Bayesian Cable Curl", m:"Biceps", sets:[{w:12.5,r:12},{w:12.5,r:10},{w:15,r:8}], unit:"ea hand" },
@@ -284,7 +425,7 @@ const PLAN = [
     { name:"45° Back Extension", m:"Hams/Glutes ★",
       cue:"Your hip-hinge. Bodyweight first; hug a plate once 3×12 is easy. Drive through the hips, squeeze the glutes at the top.",
       sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
-    { name:"Lying Leg Curl", m:"Hamstrings", sets:[{w:35,r:12},{w:40,r:10},{w:40,r:8}] },
+    { name:"Lying Leg Curl", m:"Hamstrings", sets:[{w:40,r:12},{w:45,r:10},{w:50,r:8}] },
     { name:"Calf Raise (Smith)", m:"Calves", sets:[{w:70,r:12},{w:75,r:10},{w:80,r:8}] },
   ]},
 ];
@@ -341,6 +482,7 @@ function render(){
     add.textContent = "+ Add Set";
     add.onclick = ()=>{ log.extra[ei]=log.extra[ei]||[]; const last=ex.sets[ex.sets.length-1]; log.extra[ei].push({w:last.w,r:last.r,done:false}); save(); render(); };
     card.appendChild(add);
+    const tech=buildTech(ex); if(tech) card.appendChild(tech);
     card.appendChild(buildNotes(activeDay,ei));
     host.appendChild(card);
   });
@@ -349,6 +491,20 @@ function render(){
   // last log line
   const done = (store.history||[]).filter(h=>h.dayId===activeDay).sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
   document.getElementById("lastlog").textContent = done ? `Last logged: ${new Date(done.date).toLocaleDateString("en-US",{month:"short",day:"numeric"})} · ${done.totalSets} sets · ${fmtDur(done.dur)}` : "No sessions logged for this day yet.";
+}
+
+function buildTech(ex){
+  if(!ex.tech) return null;
+  const t=ex.tech, d=document.createElement("details");
+  d.className="tech";
+  let h='<summary>Technique &amp; Tips</summary><div class="tbody">';
+  if(t.works) h+='<h4>Muscles worked</h4><p>'+t.works+'</p>';
+  if(t.build) h+="<h4>What you're building</h4><p>"+t.build+'</p>';
+  if(t.steps) h+='<h4>Execution</h4><ol>'+t.steps.map(x=>'<li>'+x+'</li>').join("")+'</ol>';
+  if(t.errors) h+='<h4>Common errors</h4><ul>'+t.errors.map(x=>'<li class="warn">'+x+'</li>').join("")+'</ul>';
+  if(t.check) h+='<h4>Self-check</h4><ul>'+t.check.map(x=>'<li>'+x+'</li>').join("")+'</ul>';
+  d.innerHTML=h+'</div>';
+  return d;
 }
 
 function makeRow(ei,si,s,log,isExtra){
