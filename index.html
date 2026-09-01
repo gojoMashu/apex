@@ -210,14 +210,14 @@
 
   <div class="note">
     <div class="h">Warm-Up · 5 min</div>
-    <p>5 min easy cardio to break a light sweat, then dynamic work: arm circles, band pull-aparts, leg swings, bodyweight squats, and 2 light ramp-up sets on your first lift.</p>
+    <p id="warmupbody">5 min easy cardio to break a light sweat, then dynamic work: arm circles, band pull-aparts, leg swings, bodyweight squats, and 2 light ramp-up sets on your first lift.</p>
   </div>
 
   <div id="exercises"></div>
 
   <div class="note">
-    <div class="h">Cool-Down</div>
-    <p>Static stretches ~25s each: chest doorway stretch, lat hang, hip-flexor lunge, hamstring fold, quad stretch. Slow nasal breathing to drop the heart rate.</p>
+    <div class="h">Cool-Down · ~3 min</div>
+    <p id="cooldownbody">Static stretches ~25s each: chest doorway stretch, lat hang, hip-flexor lunge, hamstring fold, quad stretch. Slow nasal breathing to drop the heart rate.</p>
   </div>
 
   <div class="actions">
@@ -237,7 +237,10 @@
 <script>
 /* ---------------- PLAN (finalized, your real weights preloaded) ---------------- */
 const PLAN = [
-  { id:"d1", n:"DAY 1", short:"Push/Pull", title:"Chest · Back · Delts", ex:[
+  { id:"d1", n:"DAY 1", short:"Push/Pull", title:"Chest · Back · Delts",
+    warmup:"5 min light cardio, then arm circles (10 ea direction) + band pull-aparts ×15 + scapular wall slides ×10, then 2 light ramp-up sets on the Incline Smith Press.",
+    cooldown:"Doorway chest stretch 30s, lat hang 30s, cross-body rear-delt stretch 20s ea side. Slow nasal breathing to bring the heart rate down.",
+    ex:[
     { name:"Incline Smith Press", m:"Chest",
       cue:"SET THE BENCH TO 30° AND KEEP IT THERE — EMG peaks for upper chest at 30°; past 45° the front delt takes over. Pick one notch and never vary it. Slide the bench until the bar meets your UPPER chest, just under the collarbone.",
       tech:{
@@ -426,7 +429,10 @@ const PLAN = [
       },
       sets:[{w:15,r:12},{w:15,r:11},{w:15,r:10}] },
   ]},
-  { id:"d2", n:"DAY 2", short:"Push/Pull", title:"Chest \u00b7 Back \u00b7 Triceps", ex:[
+  { id:"d2", n:"DAY 2", short:"Push/Pull", title:"Chest \u00b7 Back \u00b7 Triceps",
+    warmup:"5 min light cardio, then arm circles + band pull-aparts \u00d715 + a few thoracic rotations, then 2 ramp-up sets on the Iso-Lateral Press.",
+    cooldown:"Doorway chest stretch 30s, overhead triceps stretch 30s ea side, lat hang 30s. Child's pose 20s after the ab work.",
+    ex:[
     { name:"Iso-Lateral Press", m:"Chest",
       cue:"LOADS UPDATED \u2014 file was 10% stale. Raise the seat so handles sit at mid-chest. Blades into the pad, squeeze at the top instead of punching to lockout. Pause in the stretch.",
       tech:{
@@ -622,7 +628,10 @@ const PLAN = [
       },
       sets:[{w:0,r:12},{w:0,r:12},{w:0,r:12}] },
   ]},
-  { id:"d3", n:"DAY 3", short:"Legs", title:"Legs", ex:[
+  { id:"d3", n:"DAY 3", short:"Legs", title:"Legs",
+    warmup:"5 min light cardio, then leg swings front/back + side/side (10 ea leg), bodyweight squats \u00d710, walking lunges \u00d78 ea side, then 2 ramp-up sets on the Leg Press.",
+    cooldown:"Standing quad stretch 30s ea side, standing hamstring stretch 30s ea side, calf stretch against a wall 30s ea side.",
+    ex:[
     { name:"Leg Press", m:"Quads",
       cue:"\u2b50 RUN THIS DAY EARLY IN THE WEEK \u2014 end-of-week placement is why it gets skipped. Feet mid-platform, shoulder width, toes 15\u201330\u00b0 out. Lower back GLUED to the pad.",
       tech:{
@@ -769,7 +778,10 @@ const PLAN = [
       sets:[{w:70,r:15},{w:75,r:12},{w:80,r:12}] },
   ]},
 
-  { id:"d4", n:"DAY 4", short:"Shoulders/Arms", title:"Shoulders \u00b7 Arms \u00b7 Abs", ex:[
+  { id:"d4", n:"DAY 4", short:"Shoulders/Arms", title:"Shoulders \u00b7 Arms \u00b7 Abs",
+    warmup:"5 min light cardio, then arm circles + band pull-aparts \u00d715 + band shoulder dislocates \u00d710, then 2 ramp-up sets on the Machine Shoulder Press.",
+    cooldown:"Overhead triceps stretch 30s ea side, doorway chest/front-delt stretch 30s, cross-body rear-delt stretch 20s ea side.",
+    ex:[
     { name:"Machine Shoulder Press", m:"Shoulders",
       cue:"LOADS UPDATED (file was stale). Back flat to the pad, press without shrugging, stop just short of lockout.",
       sets:[{w:50,r:12},{w:55,r:10},{w:59,r:8}] },
@@ -793,7 +805,10 @@ const PLAN = [
       sets:[{w:25,r:15},{w:30,r:12},{w:35,r:10}] },
   ]},
 
-  { id:"d5", n:"QUICK", short:"Quick Legs", title:"Quick Legs", ex:[
+  { id:"d5", n:"QUICK", short:"Quick Legs", title:"Quick Legs",
+    warmup:"2\u20133 min: leg swings \u00d710 ea leg + bodyweight squats \u00d710, then 1 ramp-up set on the Leg Press.",
+    cooldown:"Quick version \u2014 20s ea: standing quad stretch, standing hamstring stretch, calf stretch against a wall.",
+    ex:[
     { name:"Leg Press", m:"Quads",
       cue:"Time-crunch leg day — the essential stimulus in ~25 min. LOADS SYNCED WITH DAY 3. The safety net: a short leg day that happens beats a full one that does not.",
       sets:[{w:130,r:12},{w:140,r:10},{w:150,r:8}] },
@@ -834,6 +849,8 @@ function render(){
   const day = PLAN.find(d=>d.id===activeDay);
   document.getElementById("dayname").textContent = day.title;
   document.getElementById("daydate").textContent = new Date().toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+  if(day.warmup) document.getElementById("warmupbody").textContent = day.warmup;
+  if(day.cooldown) document.getElementById("cooldownbody").textContent = day.cooldown;
 
   const log = dayLog(activeDay);
   const host = document.getElementById("exercises");

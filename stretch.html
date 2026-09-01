@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="theme-color" content="#0A0B0D" />
+<title>MOBILITY — Daily Stretch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --base:#0A0B0D; --card:#141619; --card2:#1C2026; --input:#0E0F12;
+    --accent:#00C2FF; --accent-soft:rgba(0,194,255,.12);
+    --good:#23C16B; --good-soft:rgba(35,193,107,.15);
+    --dim:#828A94; --dim2:#5B626B; --line:#23272E;
+    --head:'Barlow Condensed',system-ui,sans-serif; --body:'Barlow',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--base);color:#fff;font-family:var(--body);
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(96px + env(safe-area-inset-bottom)) env(safe-area-inset-left);}
+  .wrap{max-width:620px;margin:0 auto;padding:18px 14px 0;}
+  h1,h2,h3,.head{font-family:var(--head);}
+  .accent{color:var(--accent);} .good{color:var(--good);} .dim{color:var(--dim);} .dim2{color:var(--dim2);}
+  button{font-family:var(--head);cursor:pointer;border:none;background:none;color:inherit;}
+  .tap{transition:transform .08s ease,background .15s,border-color .15s;} .tap:active{transform:scale(.97);}
+
+  .topline{display:flex;justify-content:space-between;align-items:flex-end;}
+  .logo{font-family:var(--head);font-weight:900;font-size:30px;letter-spacing:.5px;line-height:1;}
+  .sub{font-size:12px;color:var(--dim);margin-top:3px;}
+  .streakbox{text-align:right;}
+  .streaknum{font-family:var(--head);font-weight:800;font-size:22px;line-height:1;color:var(--accent);}
+  .streaklabel{font-size:11px;color:var(--dim2);margin-top:3px;}
+
+  .strip{background:var(--card2);border-radius:10px;padding:9px 14px;margin-top:14px;
+         display:flex;justify-content:space-between;align-items:center;
+         clip-path:polygon(0 0,100% 0,100% 100%,8px 100%,0 calc(100% - 8px));}
+  .strip .k{font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+  .strip .v{font-size:12px;color:var(--accent);font-weight:600;}
+
+  .banner{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:10px 12px;
+          margin-top:14px;font-size:13px;color:var(--accent);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .banner button{font-family:var(--body);font-size:18px;color:var(--accent);}
+
+  .daybar{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+  .dayname{font-family:var(--head);font-weight:900;font-size:22px;line-height:1.05;}
+  .daydate{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.14em;}
+  .progress{font-family:var(--head);font-weight:800;font-size:15px;color:var(--dim);}
+  .progress.done{color:var(--good);}
+
+  .calendar{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;margin-top:12px;}
+  .dot{aspect-ratio:1;border-radius:6px;background:var(--card2);border:1px solid var(--line);}
+  .dot.done{background:var(--good);border-color:var(--good);}
+  .dot.partial{background:var(--accent-soft);border-color:var(--accent);}
+  .dot.today{box-shadow:0 0 0 1px var(--accent);}
+
+  .item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;
+        display:flex;gap:12px;align-items:flex-start;}
+  .item.done{border-color:var(--good);background:linear-gradient(0deg,var(--good-soft),var(--good-soft)),var(--card);}
+  .ibody{flex:1;}
+  .iname{font-family:var(--head);font-weight:800;font-size:17px;line-height:1.1;}
+  .itarget{font-family:var(--head);font-weight:700;font-size:12px;color:var(--accent);letter-spacing:.06em;margin-top:2px;}
+  .icue{font-size:13px;color:var(--dim);margin-top:6px;line-height:1.45;}
+  .chk{width:36px;height:36px;border-radius:9px;background:var(--card2);border:1px solid var(--line);
+       display:flex;align-items:center;justify-content:center;flex:0 0 auto;margin-top:2px;}
+  .chk.on{background:var(--good);border-color:var(--good);}
+  .chk svg{width:19px;height:19px;}
+
+  .why{background:var(--card2);border-radius:10px;padding:12px 14px;margin-top:16px;}
+  .why .h{font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);}
+  .why p{font-size:13px;color:var(--dim);margin-top:6px;line-height:1.5;}
+
+  .actions{margin-top:18px;}
+  .finish{width:100%;background:var(--accent);color:#06121A;font-family:var(--head);font-weight:800;font-size:17px;
+          letter-spacing:.14em;text-transform:uppercase;border-radius:10px;padding:13px;}
+  .finish.locked{background:var(--card2);color:var(--dim2);}
+
+  .datarow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .dbtn{border:1px solid var(--line);color:var(--dim);font-family:var(--head);font-weight:700;
+        font-size:13px;letter-spacing:.12em;text-transform:uppercase;border-radius:10px;padding:10px;}
+  .dbtn:active{border-color:var(--accent);color:var(--accent);}
+
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--good);color:#06121A;
+         font-family:var(--head);font-weight:800;letter-spacing:.06em;text-transform:uppercase;font-size:14px;
+         padding:11px 22px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;}
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topline">
+    <div>
+      <div class="logo">MOBILITY<span class="accent">.</span></div>
+      <div class="sub">Desk-stiffness counter · non-gym days</div>
+    </div>
+    <div class="streakbox">
+      <div class="streaknum" id="streaknum">0</div>
+      <div class="streaklabel">day streak</div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <span class="k">Target</span>
+    <span class="v">Daily · ~6–7 min</span>
+  </div>
+
+  <div id="homebanner" class="banner" style="display:none">
+    <span>📲 Add to Home Screen — Share → "Add to Home Screen".</span>
+    <button onclick="dismissBanner()">✕</button>
+  </div>
+
+  <div class="daybar">
+    <div>
+      <div class="daydate" id="daydate"></div>
+      <div class="dayname">Today's stretch</div>
+    </div>
+    <div class="progress" id="progress">0/6</div>
+  </div>
+
+  <div class="calendar" id="calendar"></div>
+
+  <div id="items"></div>
+
+  <div class="why">
+    <div class="h">Why this list</div>
+    <p>Aimed at what sitting all day actually tightens — hip flexors, chest, upper back, hamstrings, glutes. Not a recovery tool: on gym days those muscles already get a targeted cool-down inside APEX. This is for the other days, so the desk doesn't win the week.</p>
+  </div>
+
+  <div class="actions">
+    <button class="finish tap" id="finishBtn" onclick="finishToday()">Mark Today Done</button>
+  </div>
+  <div class="datarow">
+    <button class="dbtn tap" onclick="exportData()">↓ Backup</button>
+    <button class="dbtn tap" onclick="document.getElementById('importFile').click()">↑ Restore</button>
+  </div>
+  <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importData(event)">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ITEMS = [
+  { name:"Kneeling Hip-Flexor Stretch", target:"35s ea side", cue:"Half-kneel, back knee down, tuck the pelvis under and push the hips gently forward. You should feel it at the front of the back hip — not the knee." },
+  { name:"Doorway Chest Stretch", target:"30s ea side", cue:"Forearm on the frame at shoulder height, step through slowly until you feel a stretch across the chest and front shoulder." },
+  { name:"Cat–Cow", target:"8–10 reps", cue:"On the mat, hands under shoulders. Round the upper back up on the exhale, arch gently on the inhale — slow and controlled." },
+  { name:"Standing Hamstring Stretch", target:"30s ea leg", cue:"Heel on a low surface, leg straight, hinge from the hips (not the lower back) until you feel the back of the thigh stretch." },
+  { name:"Figure-4 Glute Stretch", target:"35s ea side", cue:"Lying on the mat, ankle crossed over the opposite knee, pull the far thigh toward you until you feel it deep in the hip/glute." },
+  { name:"Band Pull-Apart", target:"15–20 reps", cue:"Arms straight in front at shoulder height, pull the band apart squeezing the shoulder blades together. Light activation, not a stretch." },
+];
+
+const LS = "apex_stretch_v1";
+let store = load();
+function load(){ try{ return JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ return {}; } }
+function save(){ try{ localStorage.setItem(LS, JSON.stringify(store)); }catch(e){} }
+
+function todayKey(d){ d = d || new Date(); return d.toISOString().slice(0,10); }
+
+store.log = store.log || {}; // { "YYYY-MM-DD": [bool,bool,...] }
+const TKEY = todayKey();
+store.log[TKEY] = store.log[TKEY] || ITEMS.map(()=>false);
+
+function computeStreak(){
+  let streak = 0;
+  let d = new Date();
+  // if today isn't complete yet, start counting from yesterday so an in-progress day doesn't break the streak display
+  const todayDone = (store.log[todayKey(d)]||[]).every(Boolean) && (store.log[todayKey(d)]||[]).length===ITEMS.length;
+  if(!todayDone) d.setDate(d.getDate()-1);
+  while(true){
+    const k = todayKey(d);
+    const rec = store.log[k];
+    if(rec && rec.length===ITEMS.length && rec.every(Boolean)){ streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  if(todayDone) streak++; // count today itself once, since the loop above starts from yesterday when today is done
+  return streak;
+}
+
+function render(){
+  document.getElementById("daydate").textContent = new Date().toLocaleDateString("en-US",{weekday:"long",month:"short",day:"numeric"});
+
+  const today = store.log[TKEY];
+  const host = document.getElementById("items");
+  host.innerHTML = "";
+  ITEMS.forEach((it,i)=>{
+    const row = document.createElement("div");
+    row.className = "item" + (today[i]?" done":"");
+    row.innerHTML = `
+      <div class="ibody">
+        <div class="iname">${it.name}</div>
+        <div class="itarget">${it.target}</div>
+        <div class="icue">${it.cue}</div>
+      </div>
+      <button class="chk tap ${today[i]?"on":""}" data-i="${i}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="${today[i]?'#06121A':'#5B626B'}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </button>`;
+    row.querySelector(".chk").addEventListener("click",()=>{
+      today[i] = !today[i];
+      save(); render();
+    });
+    host.appendChild(row);
+  });
+
+  const doneCount = today.filter(Boolean).length;
+  const prog = document.getElementById("progress");
+  prog.textContent = `${doneCount}/${ITEMS.length}`;
+  prog.classList.toggle("done", doneCount===ITEMS.length);
+
+  const finishBtn = document.getElementById("finishBtn");
+  const allDone = doneCount===ITEMS.length;
+  finishBtn.textContent = allDone ? "Today Complete ✓" : `Mark Today Done (${doneCount}/${ITEMS.length})`;
+  finishBtn.classList.toggle("locked", !allDone);
+
+  document.getElementById("streaknum").textContent = computeStreak();
+
+  // 14-day calendar
+  const cal = document.getElementById("calendar");
+  cal.innerHTML = "";
+  for(let i=13;i>=0;i--){
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const k = todayKey(d);
+    const rec = store.log[k];
+    const dot = document.createElement("div");
+    let cls = "dot";
+    if(rec && rec.length){
+      const n = rec.filter(Boolean).length;
+      if(n===ITEMS.length) cls += " done";
+      else if(n>0) cls += " partial";
+    }
+    if(k===TKEY) cls += " today";
+    dot.className = cls;
+    cal.appendChild(dot);
+  }
+}
+
+function finishToday(){
+  const today = store.log[TKEY];
+  if(today.every(Boolean)){ toast("Already logged today 💪"); return; }
+  toast("Check off the remaining stretches first");
+}
+
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1600); }
+
+function dismissBanner(){ store.bannerDismissed=true; save(); document.getElementById("homebanner").style.display="none"; }
+(function(){
+  const standalone = window.navigator.standalone || window.matchMedia("(display-mode: standalone)").matches;
+  if(!standalone && !store.bannerDismissed){ document.getElementById("homebanner").style.display="flex"; }
+})();
+
+function exportData(){
+  try{
+    const blob = new Blob([JSON.stringify(store,null,2)],{type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "mobility-backup-" + todayKey() + ".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    toast("Backed up · " + Object.keys(store.log).length + " days logged");
+  }catch(e){ toast("Export failed"); }
+}
+function importData(evt){
+  const f = evt.target.files && evt.target.files[0];
+  if(!f) return;
+  const rdr = new FileReader();
+  rdr.onload = ()=>{
+    try{
+      const data = JSON.parse(rdr.result);
+      if(!data || typeof data!=="object" || Array.isArray(data)) throw new Error("shape");
+      store = data;
+      store.log = store.log || {};
+      store.log[TKEY] = store.log[TKEY] || ITEMS.map(()=>false);
+      save(); render();
+      toast("Data restored");
+    }catch(e){ toast("Invalid backup file"); }
+    evt.target.value = "";
+  };
+  rdr.onerror = ()=>{ toast("Could not read file"); evt.target.value=""; };
+  rdr.readAsText(f);
+}
+
+save();
+render();
+</script>
+</body>
+</html>
