@@ -365,7 +365,7 @@ const PLAN = [
       },
       sets:[{w:23.75,r:12},{w:25,r:11},{w:26.25,r:10}], unit:"ea side" },
     { name:"Low Row (V-handle)", m:"Back",
-      cue:"SWITCHED TO THE V-HANDLE \u2014 you tested it and felt the movement far better, and it fills the gap: this is now your only CLOSE-grip horizontal pull. Elbows TUCKED along the ribs, pull to the upper abdomen. Start at 40, not 45.",
+      cue:"LADDER MOVED UP — you cleanly beat the target on sets 2 and 3 (42.5×12 vs a target of ×10, 45×10 vs a target of ×8), so the whole ladder steps up 2.5 kg. Elbows TUCKED along the ribs, pull to the upper abdomen.",
       tech:{
         works:"Latissimus dorsi (primary \u2014 shoulder EXTENSION with the elbows tucked, and the lower lat fibres in particular), teres major, mid traps and rhomboids assisting, biceps/brachialis/brachioradialis elevated by the neutral grip, erectors isometrically.",
         build:"Lower lat thickness \u2014 the part that creates the line sweeping in toward the waist. That is the V-taper, and it feeds your primary goal: a back that flares wider above a waist that reads narrower. Your other three back exercises all work the upper and mid regions; this is the only one loading the lat in the tucked-elbow path.",
@@ -390,13 +390,13 @@ const PLAN = [
           "Do the elbows brush your ribs on the way back?",
           "Is the torso moving less than 15\u00b0?",
           "Can you hold a full second at the squeeze? If not, drop the weight.",
-          "START AT 40. The neutral grip is stronger, but the path is new \u2014 earn the load back."
+          "PROGRESSION: when set 3 gives a clean top-of-range rep count, move the whole ladder up 2.5."
         ],
         links:[
           {t:"M&S \u00b7 V-bar seated row video",u:"https://www.muscleandstrength.com/exercises/seated-row.html"}
         ]
       },
-      sets:[{w:40,r:12},{w:42.5,r:10},{w:45,r:8}] },
+      sets:[{w:42.5,r:12},{w:45,r:10},{w:47.5,r:8}] },
     { name:"Cable Lateral Raise", m:"Side Delts",
       cue:"SETUP CHANGED — pulley just BELOW HIP height (not the floor), step ~an arm's length away so there is tension before rep 1, and use an ANKLE STRAP around the wrist instead of a handle. Expect to drop to ~6.25 and recalibrate. DOUBLE PROGRESSION: hold until all 3 sets hit a clean 15, then up one step.",
       sets:[{w:7.5,r:15},{w:7.5,r:15},{w:7.5,r:15}] },
@@ -1191,8 +1191,8 @@ function makeRow(ei,si,s,log,isExtra){
   row.querySelector(".chk").addEventListener("click",()=>{
     unlockAudio();
     log.sets[key]=log.sets[key]||{}; log.sets[key].done=!log.sets[key].done; save();
-    if(log.sets[key].done){ const dur=store.restDur||90; restState={key:key,endsAt:Date.now()+dur*1000,dur:dur,fired:false}; requestWakeLock(); }
-    else if(restState && restState.key===key){ restState=null; releaseWakeLock(); }
+    if(log.sets[key].done){ const dur=store.restDur||90; restState={key:key,endsAt:Date.now()+dur*1000,dur:dur,fired:false}; }
+    else if(restState && restState.key===key){ restState=null; }
     render();
   });
   return row;
@@ -1287,26 +1287,7 @@ function dismissBanner(){ store.bannerDismissed=true; save(); document.getElemen
 })();
 
 /* ---------------- Rest timer + sound ---------------- */
-let audioCtx=null, restState=null, wakeLock=null;
-/* Keeps the screen from auto-locking during a rest countdown, so the beep/vibrate
-   actually fires on time instead of only when the person returns to the tab. */
-async function requestWakeLock(){
-  try{
-    if('wakeLock' in navigator){
-      wakeLock = await navigator.wakeLock.request('screen');
-      wakeLock.addEventListener('release', ()=>{ wakeLock=null; });
-    }
-  }catch(e){ /* not supported, denied, or low battery mode \u2014 fail silently */ }
-}
-function releaseWakeLock(){
-  if(wakeLock){ try{ wakeLock.release(); }catch(e){} wakeLock=null; }
-}
-document.addEventListener('visibilitychange', ()=>{
-  if(document.visibilityState==='visible'){
-    if(restState) requestWakeLock();   // browsers auto-release the lock on hide; re-acquire it
-    tickRest();                         // fire any alert that was due while away, immediately
-  }
-});
+let audioCtx=null, restState=null;
 function unlockAudio(){
   try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
   if(audioCtx && audioCtx.state==="suspended") audioCtx.resume();
@@ -1362,7 +1343,7 @@ function adjustRest(delta){
   if(el){ el.classList.remove("go"); const b=el.querySelector(".rt-btns");
     if(b) b.innerHTML='<button onclick="adjustRest(-15)">−15s</button><button onclick="adjustRest(30)">+30s</button><button onclick="skipRest()">Skip</button>'; }
 }
-function skipRest(){ restState=null; releaseWakeLock(); render(); }
+function skipRest(){ restState=null; render(); }
 function tickRest(){
   if(!restState) return;
   const el=document.getElementById("rest-"+restState.key);
